@@ -25,8 +25,7 @@ public class VKResponse {
 
 
     public static void main(String[] args) throws JsonProcessingException {
-//        String body = "{\"response\":{\"items\":[],\"count\":1000,\"total_count\":986477}}";
-        String body = "{\"items\":[],\"count\":1000,\"total_count\":986477}";
+        String body = "{\"items\":[],\"count\":900,\"total_count\":900}";
         ObjectMapper objectMapper = new ObjectMapper();
         VKResponse response = objectMapper.readValue(body, VKResponse.class);
         System.out.println(response.getCount());
