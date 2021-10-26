@@ -1,7 +1,7 @@
 package ru.akirakozov.sd.refactoring;
 
 import org.junit.Test;
-import ru.akirakozov.sd.refactoring.servlet.QueryServlet;
+import ru.akirakozov.sd.refactoring.servlet.QueryProductsServlet;
 
 import java.io.IOException;
 
@@ -10,13 +10,13 @@ import static org.mockito.Mockito.when;
 public class QueryProductsServletTest extends DatabaseProductsTestBase {
     private void testCommand(String command, String result) throws IOException {
         when(request.getParameter("command")).thenReturn(command);
-        new QueryServlet().doGet(request, response);
+        new QueryProductsServlet().doGet(request, response);
         stripAndCheck(writer.toString(), result);
     }
 
     @Test
     public void emptyTest() throws IOException {
-        new QueryServlet().doGet(request, response);
+        new QueryProductsServlet().doGet(request, response);
         stripAndCheck(writer.toString(), "Unknown command: null");
     }
 
