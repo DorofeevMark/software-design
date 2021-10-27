@@ -3,7 +3,6 @@ package ru.akirakozov.sd.refactoring.servlet;
 import ru.akirakozov.sd.refactoring.database.Database;
 import ru.akirakozov.sd.refactoring.domain.Product;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -11,11 +10,9 @@ import java.io.IOException;
 /**
  * @author akirakozov
  */
-public class AddProductServlet extends HttpServlet {
-    private final Database<Product> database;
-
+public class AddProductServlet extends BaseServlet {
     public AddProductServlet(Database<Product> database) {
-        this.database = database;
+        super(database);
     }
 
     @Override

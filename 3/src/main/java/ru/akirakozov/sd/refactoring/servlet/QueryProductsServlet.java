@@ -4,7 +4,6 @@ import ru.akirakozov.sd.refactoring.database.Database;
 import ru.akirakozov.sd.refactoring.domain.Product;
 import ru.akirakozov.sd.refactoring.writer.HtmlBuilder;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -12,11 +11,9 @@ import java.io.IOException;
 /**
  * @author akirakozov
  */
-public class QueryProductsServlet extends HttpServlet {
-    private final Database<Product> database;
-
+public class QueryProductsServlet extends BaseServlet {
     public QueryProductsServlet(Database<Product> database) {
-        this.database = database;
+        super(database);
     }
 
     @Override
