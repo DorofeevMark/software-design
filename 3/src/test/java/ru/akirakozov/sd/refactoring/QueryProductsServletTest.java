@@ -2,7 +2,7 @@ package ru.akirakozov.sd.refactoring;
 
 import org.junit.Before;
 import org.junit.Test;
-import ru.akirakozov.sd.refactoring.model.Product;
+import ru.akirakozov.sd.refactoring.domain.Product;
 import ru.akirakozov.sd.refactoring.servlet.QueryProductsServlet;
 
 import java.io.IOException;

@@ -1,6 +1,6 @@
 package ru.akirakozov.sd.refactoring.database;
 
-import ru.akirakozov.sd.refactoring.model.Product;
+import ru.akirakozov.sd.refactoring.domain.Product;
 
 import java.util.List;
 import java.util.stream.Collectors;

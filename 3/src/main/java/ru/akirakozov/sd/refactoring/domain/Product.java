@@ -1,4 +1,4 @@
-package ru.akirakozov.sd.refactoring.model;
+package ru.akirakozov.sd.refactoring.domain;
 
 public class Product {
     private final String name;
