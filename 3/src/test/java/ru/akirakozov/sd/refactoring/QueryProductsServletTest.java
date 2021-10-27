@@ -1,22 +1,32 @@
 package ru.akirakozov.sd.refactoring;
 
+import org.junit.Before;
 import org.junit.Test;
+import ru.akirakozov.sd.refactoring.model.Product;
 import ru.akirakozov.sd.refactoring.servlet.QueryProductsServlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import static org.mockito.Mockito.when;
 
 public class QueryProductsServletTest extends DatabaseProductsTestBase {
+    private QueryProductsServlet servlet;
+
+    @Before
+    public void setUp() {
+        servlet = new QueryProductsServlet(database);
+    }
+
     private void testCommand(String command, String result) throws IOException {
         when(request.getParameter("command")).thenReturn(command);
-        new QueryProductsServlet().doGet(request, response);
+        servlet.doGet(request, response);
         stripAndCheck(writer.toString(), result);
     }
 
     @Test
     public void emptyTest() throws IOException {
-        new QueryProductsServlet().doGet(request, response);
+        servlet.doGet(request, response);
         stripAndCheck(writer.toString(), "Unknown command: null");
     }
 
@@ -39,13 +49,13 @@ public class QueryProductsServletTest extends DatabaseProductsTestBase {
 
     @Test
     public void simpleMaxCommandTest() throws IOException {
-        execSql("INSERT INTO PRODUCT(NAME, PRICE) VALUES ('name1', 1), ('name2', 2)");
+        database.insert(List.of(new Product("name1", 1), new Product("name2", 2)));
         maxTest("name2\t2</br>\n");
     }
 
     @Test
     public void maxCommandTest() throws IOException {
-        execSql("INSERT INTO PRODUCT(NAME, PRICE) VALUES ('name1', 1), ('name2', 2), ('name3', 2)");
+        database.insert(List.of(new Product("name1", 1), new Product("name2", 2), new Product("name3", 2)));
         maxTest("name2\t2</br>\n");
     }
 
@@ -63,13 +73,13 @@ public class QueryProductsServletTest extends DatabaseProductsTestBase {
 
     @Test
     public void simpleMinCommandTest() throws IOException {
-        execSql("INSERT INTO PRODUCT(NAME, PRICE) VALUES ('name1', 1), ('name2', 2)");
+        database.insert(List.of(new Product("name1", 1), new Product("name2", 2)));
         minTest("name1\t1</br>\n");
     }
 
     @Test
     public void minCommandTest() throws IOException {
-        execSql("INSERT INTO PRODUCT(NAME, PRICE) VALUES ('name1', 1), ('name2', 2), ('name3', 1)");
+        database.insert(List.of(new Product("name1", 1), new Product("name2", 2), new Product("name3", 1)));
         minTest("name1\t1</br>\n");
     }
 
@@ -87,7 +97,7 @@ public class QueryProductsServletTest extends DatabaseProductsTestBase {
 
     @Test
     public void simpleSumCommandTest() throws IOException {
-        execSql("INSERT INTO PRODUCT(NAME, PRICE) VALUES ('name1', 1), ('name2', 2)");
+        database.insert(List.of(new Product("name1", 1), new Product("name2", 2)));
         sumTest("3\n");
     }
 
@@ -105,13 +115,13 @@ public class QueryProductsServletTest extends DatabaseProductsTestBase {
 
     @Test
     public void simpleCountCommandTest() throws IOException {
-        execSql("INSERT INTO PRODUCT(NAME, PRICE) VALUES ('name1', 1), ('name2', 2)");
+        database.insert(List.of(new Product("name1", 1), new Product("name2", 2)));
         countTest("2\n");
     }
 
     @Test
     public void countCommandTest() throws IOException {
-        execSql("INSERT INTO PRODUCT(NAME, PRICE) VALUES ('name1', 1), ('name2', 2), ('name3', 3)");
+        database.insert(List.of(new Product("name1", 1), new Product("name2", 2), new Product("name3", 3)));
         countTest("3\n");
     }
 }
