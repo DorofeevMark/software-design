@@ -25,18 +25,18 @@ public abstract class Database<T> {
 
     public abstract int count();
 
-    public void insert(T entity) {
-        insert(List.of(entity));
+    public int insert(T entity) {
+        return insert(List.of(entity));
     }
 
-    public void insert(List<T> entities) {
+    public int insert(List<T> entities) {
         if (entities.size() == 0) {
             throw new IllegalArgumentException("Illegal entities");
         }
-        doInsert(entities);
+        return doInsert(entities);
     }
 
-    public abstract void doInsert(List<T> entities);
+    public abstract int doInsert(List<T> entities);
 
 
     protected List<List<String>> selectSql(String sql, List<String> fields) {
@@ -59,10 +59,10 @@ public abstract class Database<T> {
         return result;
     }
 
-    protected void execSql(String sql) {
+    protected int execSql(String sql) {
         try (Connection c = DriverManager.getConnection(databaseConnectionString)) {
-            try (Statement stmt = c.createStatement()) {
-                stmt.executeUpdate(sql);
+            try (Statement statement = c.createStatement()) {
+                return statement.executeUpdate(sql);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -71,8 +71,8 @@ public abstract class Database<T> {
 
     protected int execSqlIntAsResult(String sql) {
         try (Connection c = DriverManager.getConnection(databaseConnectionString)) {
-            try (Statement stmt = c.createStatement()) {
-                try (ResultSet resultSet = stmt.executeQuery(sql)) {
+            try (Statement statement = c.createStatement()) {
+                try (ResultSet resultSet = statement.executeQuery(sql)) {
                     if (resultSet.next()) {
                         return resultSet.getInt(1);
                     }
