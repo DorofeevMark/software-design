@@ -1,0 +1,73 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
+    <title>TODO list</title>
+</head>
+<body>
+
+<h3>Task lists:</h3>
+
+<table>
+    <th:block th:each="taskList : ${taskLists}">
+
+        <label>List name: </label>
+        <label th:text="${taskList.getName()}"></label>
+        <br>
+
+
+        <th:block th:each="task : ${taskList.tasks}">
+            <form th:method="POST" th:action="@{/task/{id}(id=${task.getId()})}">
+                <th:block th:if="${task.isComplete()}">
+                    <span th:text="${task.getName()}" style="text-decoration: line-through;"></span>
+                </th:block>
+                <th:block th:if="${!task.isComplete()}">
+                    <span th:text="${task.getName()}"></span>
+                </th:block>
+                <input type="submit" value="change">
+                <input type="hidden" th:name="status" th:value="${!task.isComplete()}">
+            </form>
+            <br>
+        </th:block>
+        <br>
+    </th:block>
+</table>
+
+<h3>Add new list of task</h3>
+<form th:object="${taskList}" method="POST" action="/task/list">
+    <table>
+        <tr>
+            <td><label>Name:</label></td>
+            <td><input type="text" th:field="*{name}"/></td>
+        </tr>
+    </table>
+
+    <input type="submit" value="add">
+</form>
+
+<h3>Add new task</h3>
+<form th:object="${task}" method="POST" action="/task">
+    <label>Name:</label>
+    <input type="text" th:field="*{name}"/>
+    <br>
+    <th:block th:each="tl : ${taskLists}">
+        <input name="taskList" type="radio" th:value="${tl.getId()}">
+        <label th:text="${tl.getName()}" th:value="${tl.getId()}" th:field="*{taskList.id}"></label>
+        <label hidden="true" th:text="${tl.getName()}" th:value="${tl.getName()}"
+               th:field="*{taskList.name}"></label>
+        <br>
+    </th:block>
+
+    <input type="submit" value="add">
+</form>
+
+<h3>Delete task list</h3>
+<form th:method="DELETE" action="/task/list">
+    <select th:name="deleteTaskId">
+        <option th:each="tl : ${taskLists}" th:value="${tl.getId()}" th:text="${tl.getName()}"></option>
+    </select>
+
+    <input type="submit" value="delete">
+</form>
+
+</body>
+</html>
